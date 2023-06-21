@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css';
-import Login from './components/Login';
+import RouterComponent from './router';
 
-const App: React.FC = () => { //The App component is defined as a functional component using the React.FC
+const App: React.FC = () => {
   return (
-    <div className="app-container"> {/*container for the component's contents */}
-      <h1>Sign In</h1>
-      <Login /> {/* Render the Login component */}
+    <div className="app-container">
+      {/* <h1>Sign In</h1> */}
+      <RouterComponent />
     </div>
   );
 };
