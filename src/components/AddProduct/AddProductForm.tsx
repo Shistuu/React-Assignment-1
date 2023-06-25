@@ -1,28 +1,21 @@
 import React, { useState } from "react";
 import "./AddProduct.css";
+import { useNavigate } from "react-router-dom";
+import { addProduct } from "../../services/product";
 
-interface AddProductFormProps {
-  prod_name: string;
-  qty: number;
-  price: number;
-  remark: string;
-  description: string;
-}
-
-const AddProductForm: React.FC<AddProductFormProps> = (props) => {
+const AddProductForm: React.FC = () => {
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState(0);
-  const [productPrice, setProductPrice] = useState(0);
-  const [productRemark, setProductRemark] = useState("");
-  const [productDescription, setProductDescription] = useState("");
-
-  const handleSubmit = (event: React.FormEvent) => {
+  const [price, setPrice] = useState(0);
+  const [remark, setRemark] = useState("");
+  const [description, setDescription] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Product Name:", productName);
-    console.log("Quantity:", quantity);
-    console.log("Price:", productPrice);
-    console.log("Remark:", productRemark);
-    console.log("Description:", productDescription);
+    const productData = { productName, quantity, price, remark, description };
+    console.log(productData);
+    await addProduct(productData);
+    navigate("/product", { replace: true });
   };
 
   return (
@@ -42,20 +35,20 @@ const AddProductForm: React.FC<AddProductFormProps> = (props) => {
       <input
         type="number"
         placeholder="Price"
-        value={productPrice}
-        onChange={(e) => setProductPrice(parseFloat(e.target.value))}
+        value={price}
+        onChange={(e) => setPrice(parseFloat(e.target.value))}
       />
       <input
         type="text"
         placeholder="Remark"
-        value={productRemark}
-        onChange={(e) => setProductRemark(e.target.value)}
+        value={remark}
+        onChange={(e) => setRemark(e.target.value)}
       />
       <input
         type="text"
         placeholder="Description"
-        value={productDescription}
-        onChange={(e) => setProductDescription(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <button type="submit">Submit</button>
     </form>

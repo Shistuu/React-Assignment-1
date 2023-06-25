@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginForm from "./components/Login/LoginForm";
 import SignupForm from "./components/SignUp";
 import AddProductForm from "./components/AddProduct/AddProductForm";
-
+import GetProducts from "./components/getProduct/GetProduct";
+import ProtectedRoute from "./components/protectedroute";
 function Router() {
   return (
     <BrowserRouter>
@@ -12,15 +13,19 @@ function Router() {
         <Route path="login" element={<LoginForm />} />
         <Route path="signup" element={<SignupForm />} />
         <Route
+          path="product"
+          element={
+            <ProtectedRoute>
+              <GetProducts />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="add-product"
           element={
-            <AddProductForm
-              prod_name={""}
-              qty={0}
-              price={0}
-              remark={""}
-              description={""}
-            />
+            <ProtectedRoute>
+              <AddProductForm />
+            </ProtectedRoute>
           }
         />
       </Routes>

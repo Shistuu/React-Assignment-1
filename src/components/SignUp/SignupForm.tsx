@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
-import './SignupForm.css';
+import React, { useState } from "react";
+import "./SignupForm.css";
+import { registerUser } from "../../services/user";
+import { useNavigate } from "react-router-dom";
 
 const SignupForm: React.FC = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [phone, setPhone] = useState('');
-  const [gender, setGender] = useState('');
+  const [username, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [gender, setGender] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log('Name:', name);
-    console.log('Email:', email);
-    console.log('Address:', address);
-    console.log('Phone:', phone);
-    console.log('Gender:', gender);
+    const userData = { username, email, address, phone, gender, password }; //
+    await registerUser(userData); // Obtain the AxiosResponse object
+    navigate("/login", { replace: true });
   };
-
   return (
     <form className="signup-form" onSubmit={handleSubmit}>
       <input
         className="signup-input"
         type="text"
         placeholder="Name"
-        value={name}
+        value={username}
         onChange={(e) => setName(e.target.value)}
       />
       <input
@@ -54,7 +55,16 @@ const SignupForm: React.FC = () => {
         value={gender}
         onChange={(e) => setGender(e.target.value)}
       />
-      <button className="signup-button" type="submit">Submit</button>
+      <input
+        className="signup-input"
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button className="signup-button" type="submit">
+        Submit
+      </button>
     </form>
   );
 };

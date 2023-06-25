@@ -1,32 +1,28 @@
 import React, { useState } from "react";
 import "./Login.css";
-import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUserService } from "../../services/user";
+
 const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post("/api/login", {
-        username,
-        password,
-      });
-      // Handle the response from the backend
-      console.log(response.data); // Example: { token: 'your_token_value' }
-      // Redirect to a protected route or perform other actions
-    } catch (error) {
-      // Handle login error, e.g., display an error message
-      console.log("Login error:", error);
-    }
+    event.preventDefault(); // Prevents the form from submitting and refreshing the page
+    const userData = { email, password }; //
+    const response = await loginUserService(userData); // Obtain the AxiosResponse object
+    const data = response.data.token; // Access the data property of the response
+    localStorage.setItem("authentication_token", data); //
+    navigate("/product", { replace: true });
   };
   return (
     <form className="form-container" onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        placeholder="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
